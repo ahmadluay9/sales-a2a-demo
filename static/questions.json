@@ -4,5 +4,8 @@
     "Which orders were handled by the employee with the email address david.n@logistics.com?",
     "Show me all shipments that are currently marked as 'In Transit'.",
     "Can I see the full shipment history and delivery details for order ID 1003",
-    "Which shipments took more than 5 days from dispatch to delivery?"
+    "Which shipments took more than 5 days from dispatch to delivery?",
+    "What is the recommended cumulative weight limit for individual shipments?",
+    "What is the estimated transit time for road freight coming from europe?",
+    "Where is the internal warehouse (Onsite Distribution Center) located?"
 ]
