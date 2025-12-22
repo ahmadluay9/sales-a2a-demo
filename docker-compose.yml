@@ -1,0 +1,51 @@
+services:
+  #1 a2a API Server
+  a2a-server:
+    build: .
+    container_name: a2a-sales # Change container name
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - TOOLBOX_URL=http://toolbox:5000
+    depends_on:
+      - toolbox
+    command: >
+      uvicorn sales_data_agent_expose.remote_sales_data_agent.agent:a2a_app 
+      --host 0.0.0.0
+      --port 8001
+    ports:
+      - "8001:8001"
+      - "8003:8003"
+
+  #2 ADK Server
+  adk:
+    build: .
+    container_name: adk-sales # Change container name
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - REMOTE_AGENT_URL=http://34.101.127.72:8001
+    depends_on:
+      - toolbox
+      - a2a-server
+    command: >
+      adk web
+      --host 0.0.0.0
+    ports:
+      - "8000:8000"
+
+  # 3. MCP Toolbox
+  toolbox:
+    image: us-central1-docker.pkg.dev/database-toolbox/toolbox/toolbox:0.23.0
+    container_name: mcp-toolbox-sales # Change container name
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./mcp-toolbox:/config
+    command: [ "toolbox", "--tools-file", "/config/tools.yaml", "--address", "0.0.0.0", "--ui" ]
+

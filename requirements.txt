@@ -1,0 +1,12 @@
+google-genai
+google-adk
+cloud-sql-python-connector[pg8000]
+sqlalchemy
+asyncpg
+psycopg2-binary
+pgvector
+toolbox-core
+streamlit
+streamlit[auth]
+python-dotenv
+a2a-sdk[http-server]>=0.3.0

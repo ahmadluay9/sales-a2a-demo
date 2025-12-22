@@ -1,0 +1,8 @@
+[
+    "Can you generate a report showing which employee sold which products to which customers, along with the current location of each shipment?",
+    "What orders have been placed by Asia Manufacturing?",
+    "Which orders were handled by the employee with the email address david.n@logistics.com?",
+    "Show me all shipments that are currently marked as 'In Transit'.",
+    "Can I see the full shipment history and delivery details for order ID 1003",
+    "Which shipments took more than 5 days from dispatch to delivery?"
+]

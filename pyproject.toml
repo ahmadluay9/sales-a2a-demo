@@ -1,0 +1,25 @@
+[project]
+name = "sales-a2a-demo"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "a2a-sdk[http-server]>=0.3.0",
+    "aiohttp>=3.13.2",
+    "asyncpg>=0.31.0",
+    "cloud-sql-python-connector[pg8000]>=1.19.0",
+    "google-adk>=1.21.0",
+    "google-genai>=1.55.0",
+    "ipykernel>=7.1.0",
+    "mermaid-python>=0.1",
+    "nest-asyncio>=1.6.0",
+    "pgvector>=0.4.2",
+    "psycopg2-binary>=2.9.11",
+    "python-dotenv>=1.2.1",
+    "requests>=2.32.5",
+    "sqlalchemy>=2.0.45",
+    "streamlit[auth]>=1.52.1",
+    "toolbox-core>=0.5.4",
+    "uvicorn>=0.38.0",
+]

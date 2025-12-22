@@ -1,0 +1,80 @@
+{
+  "capabilities": {},
+  "defaultInputModes": [
+    "text/plain"
+  ],
+  "defaultOutputModes": [
+    "text/plain"
+  ],
+  "description": "A helpful assistant for user questions.",
+  "name": "sales_agent",
+  "preferredTransport": "JSONRPC",
+  "protocolVersion": "0.3.0",
+  "skills": [
+    {
+      "description": "A helpful assistant for user questions. Answer user questions to the best of my knowledge.",
+      "id": "sales_agent",
+      "name": "model",
+      "tags": [
+        "llm"
+      ]
+    },
+    {
+      "description": "\"Identify shipments that took longer than a specified number of days to deliver.\nExample: [{\n  \"shipment_id\": 102,\n  \"delivery_date\": \"2023-12-20\"\n}]\"\n\n\nArgs:\n    days_threshold (int): The threshold in days to define a late delivery (e.g., 7).",
+      "id": "sales_agent-find_late_deliveries",
+      "name": "find_late_deliveries",
+      "tags": [
+        "llm",
+        "tools"
+      ]
+    },
+    {
+      "description": "\"Find all orders placed by a specific customer company.\nExample: [{\n  \"order_id\": 500,\n  \"order_date\": \"2023-10-01\",\n  \"total_amount\": 1200.50,\n  \"status\": \"Completed\"\n}]\"\n\n\nArgs:\n    company_name (str): The name of the customer's company (e.g., 'PT Global Logistics').",
+      "id": "sales_agent-find_orders_by_customer",
+      "name": "find_orders_by_customer",
+      "tags": [
+        "llm",
+        "tools"
+      ]
+    },
+    {
+      "description": "\"Find all orders handled by a specific employee using their email address.\nExample: [{\n  \"order_id\": 205,\n  \"order_date\": \"2023-09-15\",\n  \"company_name\": \"Acme Corp\",\n  \"total_amount\": 500.00\n}]\"\n\n\nArgs:\n    employee_email (str): The email address of the employee (e.g., 'sales1@company.com').",
+      "id": "sales_agent-find_orders_by_employee_email",
+      "name": "find_orders_by_employee_email",
+      "tags": [
+        "llm",
+        "tools"
+      ]
+    },
+    {
+      "description": "\"Find all shipments matching a specific status (e.g., 'In Transit', 'Delivered').\nExample: [{\n  \"shipment_id\": 88,\n  \"origin\": \"Jakarta\",\n  \"destination\": \"Bandung\",\n  \"carrier\": \"JNE\"\n}]\"\n\n\nArgs:\n    status (str): The current status of the shipment (e.g., 'In Transit').",
+      "id": "sales_agent-find_shipments_by_status",
+      "name": "find_shipments_by_status",
+      "tags": [
+        "llm",
+        "tools"
+      ]
+    },
+    {
+      "description": "\"Retrieve a comprehensive report of who sold what to whom and the current shipment location.\nExample: [{\n  \"order_id\": 101,\n  \"customer\": \"Tech Corp\",\n  \"sales_rep\": \"Smith\",\n  \"service\": \"Express Delivery\",\n  \"shipment_status\": \"Delivered\",\n  \"carrier\": \"DHL\"\n}]\"",
+      "id": "sales_agent-get_order_fulfillment_report",
+      "name": "get_order_fulfillment_report",
+      "tags": [
+        "llm",
+        "tools"
+      ]
+    },
+    {
+      "description": "\"Retrieve shipment history and details for a specific order ID.\nExample: [{\n  \"shipment_id\": 42,\n  \"shipment_date\": \"2023-11-01\",\n  \"delivery_date\": \"2023-11-03\",\n  \"status\": \"Delivered\"\n}]\"\n\n\nArgs:\n    order_id (int): The unique identifier of the order.",
+      "id": "sales_agent-get_shipment_details_by_order",
+      "name": "get_shipment_details_by_order",
+      "tags": [
+        "llm",
+        "tools"
+      ]
+    }
+  ],
+  "supportsAuthenticatedExtendedCard": false,
+  "url": "https://a2a-sales-demo-158103152291.asia-southeast2.run.app",
+  "version": "0.0.1"
+}

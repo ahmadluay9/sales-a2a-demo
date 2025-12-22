@@ -1,0 +1,4 @@
+google-genai
+google-adk
+toolbox-core
+a2a-sdk[http-server]>=0.3.0

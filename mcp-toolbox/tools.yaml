@@ -1,0 +1,149 @@
+sources:
+  logistics_pg_source:
+    kind: postgres
+    host: ${POSTGRES_HOST}
+    port: ${POSTGRES_PORT}
+    database: ${POSTGRES_DB}
+    user: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+
+tools:
+  get_order_fulfillment_report:
+    kind: postgres-sql
+    source: logistics_pg_source
+    description: |
+      "Retrieve a comprehensive report of who sold what to whom and the current shipment location.
+      Example: [{
+        "order_id": 101,
+        "customer": "Tech Corp",
+        "sales_rep": "Smith",
+        "service": "Express Delivery",
+        "shipment_status": "Delivered",
+        "carrier": "DHL"
+      }]"
+    parameters: []
+    statement: >
+      SELECT 
+          o.order_id,
+          c.company_name AS Customer,
+          e.last_name AS Sales_Rep,
+          s.service_name AS Service,
+          sh.status AS Shipment_Status,
+          sh.carrier
+      FROM Orders o
+      JOIN Customers c ON o.customer_id = c.customer_id
+      JOIN Employees e ON o.employee_id = e.employee_id
+      JOIN Order_Details od ON o.order_id = od.order_id
+      JOIN Services s ON od.service_id = s.service_id
+      LEFT JOIN Shipments sh ON o.order_id = sh.order_id
+      ORDER BY o.order_id;
+
+  find_orders_by_customer:
+    kind: postgres-sql
+    source: logistics_pg_source
+    description: |
+      "Find all orders placed by a specific customer company.
+      Example: [{
+        "order_id": 500,
+        "order_date": "2023-10-01",
+        "total_amount": 1200.50,
+        "status": "Completed"
+      }]"
+    parameters:
+      - name: company_name
+        type: string
+        description: "The name of the customer's company (e.g., 'PT Global Logistics')."
+    statement: >
+      SELECT o.order_id, o.order_date, o.total_amount, o.status
+      FROM Orders o
+      JOIN Customers c ON o.customer_id = c.customer_id
+      WHERE c.company_name = $1;
+
+  find_orders_by_employee_email:
+    kind: postgres-sql
+    source: logistics_pg_source
+    description: |
+      "Find all orders handled by a specific employee using their email address.
+      Example: [{
+        "order_id": 205,
+        "order_date": "2023-09-15",
+        "company_name": "Acme Corp",
+        "total_amount": 500.00
+      }]"
+    parameters:
+      - name: employee_email
+        type: string
+        description: "The email address of the employee (e.g., 'sales1@company.com')."
+    statement: >
+      SELECT o.order_id, o.order_date, c.company_name, o.total_amount
+      FROM Orders o
+      JOIN Employees e ON o.employee_id = e.employee_id
+      JOIN Customers c ON o.customer_id = c.customer_id
+      WHERE e.email = $1;
+
+  find_shipments_by_status:
+    kind: postgres-sql
+    source: logistics_pg_source
+    description: |
+      "Find all shipments matching a specific status (e.g., 'In Transit', 'Delivered').
+      Example: [{
+        "shipment_id": 88,
+        "origin": "Jakarta",
+        "destination": "Bandung",
+        "carrier": "JNE"
+      }]"
+    parameters:
+      - name: status
+        type: string
+        description: "The current status of the shipment (e.g., 'In Transit')."
+    statement: >
+      SELECT shipment_id, origin, destination, carrier
+      FROM Shipments
+      WHERE status = $1;
+
+  get_shipment_details_by_order:
+    kind: postgres-sql
+    source: logistics_pg_source
+    description: |
+      "Retrieve shipment history and details for a specific order ID.
+      Example: [{
+        "shipment_id": 42,
+        "shipment_date": "2023-11-01",
+        "delivery_date": "2023-11-03",
+        "status": "Delivered"
+      }]"
+    parameters:
+      - name: order_id
+        type: integer
+        description: "The unique identifier of the order."
+    statement: >
+      SELECT shipment_id, shipment_date, delivery_date, status
+      FROM Shipments
+      WHERE order_id = $1;
+
+  find_late_deliveries:
+    kind: postgres-sql
+    source: logistics_pg_source
+    description: |
+      "Identify shipments that took longer than a specified number of days to deliver.
+      Example: [{
+        "shipment_id": 102,
+        "delivery_date": "2023-12-20"
+      }]"
+    parameters:
+      - name: days_threshold
+        type: integer
+        description: "The threshold in days to define a late delivery (e.g., 7)."
+    statement: >
+      SELECT shipment_id, delivery_date
+      FROM Shipments
+      WHERE delivery_date > shipment_date + (INTERVAL '1 day' * $1);
+
+toolsets:
+  logistics_operations:
+    - get_order_fulfillment_report
+    - find_orders_by_customer
+    - find_orders_by_employee_email
+    - find_shipments_by_status
+    - get_shipment_details_by_order
+    - find_late_deliveries
