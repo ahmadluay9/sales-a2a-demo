@@ -1,5 +1,6 @@
 {
-  "capabilities": {},
+  "capabilities": {
+  },
   "defaultInputModes": [
     "text/plain"
   ],
@@ -76,5 +77,32 @@
   ],
   "supportsAuthenticatedExtendedCard": false,
   "url": "https://a2a-sales-demo-158103152291.asia-southeast2.run.app",
-  "version": "0.0.1"
+  "version": "0.0.1",
+
+  "securitySchemes": {
+    "sales_oauth": {
+      "type": "oauth2",
+      "description": "Google Authentication",
+      "flows": {
+        "authorizationCode": {
+           "authorizationUrl": "https://accounts.google.com/o/oauth2/auth?access_type=offline&prompt=consent",
+          "tokenUrl": "https://oauth2.googleapis.com/token",
+          "scopes": {
+            "openid": "Authenticate using your Google account",
+            "email": "View your email address",
+            "profile": "View basic profile information"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "sales_oauth": [
+        "openid",
+        "email",
+        "profile"
+      ]
+    }
+  ]
 }
